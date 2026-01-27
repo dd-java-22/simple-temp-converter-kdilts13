@@ -14,8 +14,6 @@ class ConverterTest {
   @ParameterizedTest
   @CsvFileSource(resources = "convert-valid.csv", useHeadersInDisplayName = true)
   void convertC2F_valid(double celsius, double expected) {
-    Converter converter = new Converter();
-
     double tolerance = Math.max(
         Math.abs(expected * TOLERANCE_SCALE),
         MIN_ABSOLUTE_TOLERANCE
@@ -23,7 +21,7 @@ class ConverterTest {
 
     assertEquals(
         expected,
-        converter.convertC2F(celsius),
+        new Converter().convertC2F(celsius),
         tolerance
     );
   }
@@ -42,7 +40,22 @@ class ConverterTest {
   }
 
   @ParameterizedTest
-  @ValueSource(doubles = {-459.67, -Double.MAX_VALUE})
+  @CsvFileSource(resources = "convert-valid.csv", useHeadersInDisplayName = true)
+  void convertF2C_valid(double expected, double fahrenheit) {
+    double tolerance = Math.max(
+        Math.abs(expected * TOLERANCE_SCALE),
+        MIN_ABSOLUTE_TOLERANCE
+    );
+
+    assertEquals(
+        expected,
+        new Converter().convertF2C(fahrenheit),
+        tolerance
+    );
+  }
+
+  @ParameterizedTest
+  @ValueSource(doubles = {Converter.FAHRENHEIT_ABSOLUTE_ZERO - 0.01, -Double.MAX_VALUE})
   void convertF2C_invalid(double fahrenheit) {
     try {
       new Converter().convertF2C(fahrenheit);
