@@ -4,13 +4,15 @@ import jdk.jshell.spi.ExecutionControl.NotImplementedException;
 
 public class Converter {
 
-  static final double SCALE = 9D / 5;
-  static final double OFFSET = 32;
+  public static final double CELSIUS_ABSOLUTE_ZERO = -273.15;
+  public static final double CELSIUS_TO_FAHRENHEIT_SCALE = 9D / 5;
+  public static final int CELSIUS_TO_FAHRENHEIT_OFFSET = 32;
 
   public double convertC2F(double celsius) {
+    if (celsius < CELSIUS_ABSOLUTE_ZERO) {
+      throw new IllegalArgumentException();
+    }
 
-    return celsius * SCALE + OFFSET;
-
-//    throw new UnsupportedOperationException("Not yet implemented!");
+    return celsius * CELSIUS_TO_FAHRENHEIT_SCALE + CELSIUS_TO_FAHRENHEIT_OFFSET;
   }
 }
